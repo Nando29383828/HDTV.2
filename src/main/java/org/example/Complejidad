@@ -1,0 +1,16 @@
+
+4. Complejidad de tiempo para la operación #4
+La operación 4 consiste en mostrar el nombre y type1 de todos los Pokémon (leídos del CSV) ordenados por type1.
+
+Pasos de la operación:
+
+Se extraen los valores del Map (O(n), donde n es el número de Pokémon).
+Se crea una lista con estos valores (O(n)).
+Se ordena la lista usando un algoritmo de ordenación comparativa (por ejemplo, Collections.sort), que tiene una complejidad promedio de O(n log n).
+Finalmente, se recorre la lista ordenada para imprimir los datos (O(n)).
+Cálculo total:
+
+Extracción y creación de la lista: O(n)
+Ordenación: O(n log n)
+Impresión: O(n)
+La complejidad dominante es la ordenación, por lo que la complejidad total es O(n log n).

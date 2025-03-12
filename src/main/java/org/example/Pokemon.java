@@ -1,5 +1,7 @@
 package org.example;
 
+public class Pokemon {
+    private final String name;
     private final String type1;
     private final String type2;
     private final int total;
@@ -33,16 +35,16 @@ package org.example;
         this.ability = ability;
     }
 
-    // Getters que sí se usan
+    // Solo los getters que usas realmente
     public String getName() { return name; }
     public String getType1() { return type1; }
     public String getAbility() { return ability; }
 
+    // equals y hashCode basados en el nombre
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Pokemon)) return false;
-        Pokemon pokemon = (Pokemon) o;
+        if (!(o instanceof Pokemon pokemon)) return false;
         return name.equals(pokemon.name);
     }
 
@@ -51,6 +53,7 @@ package org.example;
         return name.hashCode();
     }
 
+    // toString para imprimir todos los datos
     @Override
     public String toString() {
         return "Pokemon{" +

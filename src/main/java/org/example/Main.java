@@ -7,15 +7,15 @@ import java.util.*;
 
 public class Main {
 
-    // Este Map contendrá todos los Pokémon leídos del CSV.
+    // Map con todos los pokemons leídos
     private static Map<String, Pokemon> allPokemons;
-    // Se utiliza un HashSet para la colección del usuario, ya que evita duplicados y tiene inserción y búsqueda en O(1).
+    // Colección del usuario (HashSet evita duplicados en O(1))
     private static Set<Pokemon> userCollection;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        // Seleccionar la implementación de Map a usar en tiempo de ejecución.
+        // Elegir implementación de Map
         System.out.println("Seleccione la implementación de Map a usar:");
         System.out.println("1. HashMap");
         System.out.println("2. TreeMap");
@@ -23,33 +23,32 @@ public class Main {
         System.out.print("Opción: ");
         String choice = sc.nextLine();
 
-        // Se crea el Map usando el patrón Factory.
+        // Usar el Factory
         allPokemons = MapFactory.getMap(choice);
 
-        // Lectura del archivo CSV.
-        // Coloca el archivo CSV en la raíz del proyecto o en una carpeta de recursos y ajusta la ruta.
-        String csvFile = "pokemon_data_pokeapi.csv";
+        // Leer el CSV
+        String csvFile = "pokemon_data_pokeapi.csv"; // Ajusta si está en otra carpeta
         readCSV(csvFile);
 
-        // Inicialización de la colección del usuario.
+        // Inicializar colección del usuario
         userCollection = new HashSet<>();
 
-        // Menú de operaciones.
+        // Menú de operaciones
         int option;
         do {
             System.out.println("\n--- MENÚ ---");
             System.out.println("1. Agregar un Pokémon a la colección del usuario.");
             System.out.println("2. Mostrar los datos de un Pokémon.");
-            System.out.println("3. Mostrar el nombre y type1 de los Pokémon en tu colección, ordenados por type1.");
-            System.out.println("4. Mostrar el nombre y type1 de todos los Pokémon, ordenados por type1.");
-            System.out.println("5. Mostrar el nombre del Pokémon(s) que tenga una habilidad específica.");
+            System.out.println("3. Mostrar (nombre, type1) de Pokémon en la colección, ordenados por type1.");
+            System.out.println("4. Mostrar (nombre, type1) de TODOS los Pokémon, ordenados por type1.");
+            System.out.println("5. Mostrar Pokémon que tengan la habilidad indicada.");
             System.out.println("0. Salir.");
             System.out.print("Ingrese su opción: ");
 
             try {
                 option = Integer.parseInt(sc.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("Opción inválida, intente de nuevo.");
+                System.out.println("Opción inválida. Intente de nuevo.");
                 option = -1;
             }
 
@@ -81,23 +80,22 @@ public class Main {
     }
 
     /**
-     * Lee el archivo CSV y carga los Pokémon en el Map allPokemons.
-     * Se asume que el CSV tiene 13 columnas en el siguiente orden:
-     * Name, Type1, Type2, Total, HP, Attack, Defense, Sp. Atk, Sp. Def, Speed, Generation, Legendary, Ability.
+     * Lee el CSV y carga los Pokémon en el Map 'allPokemons'.
+     * Se asume un CSV con 13 columnas:
+     *  Name, Type1, Type2, Total, HP, Attack, Defense,
+     *  Sp. Atk, Sp. Def, Speed, Generation, Legendary, Ability.
      */
     private static void readCSV(String csvFile) {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-            // Descartar la cabecera del CSV.
+            // Descartar la cabecera
             br.readLine();
 
             String line;
             while ((line = br.readLine()) != null) {
                 String[] fields = line.split(",");
-
                 if (fields.length < 13) {
                     continue;
                 }
-
                 String name = fields[0].trim();
                 String type1 = fields[1].trim();
                 String type2 = fields[2].trim();
@@ -130,40 +128,40 @@ public class Main {
         }
     }
 
-    // Operación 1: Agregar un Pokémon a la colección del usuario.
+    // 1. Agregar Pokémon
     private static void agregarPokemon(Scanner sc) {
-        System.out.print("Ingrese el nombre del Pokémon que desea agregar: ");
+        System.out.print("Ingrese el nombre del Pokémon: ");
         String nombre = sc.nextLine().trim();
 
         if (!allPokemons.containsKey(nombre)) {
-            System.out.println("ERROR: El Pokémon no se encuentra en la base de datos.");
+            System.out.println("ERROR: Ese Pokémon no está en la base de datos.");
             return;
         }
 
         Pokemon p = allPokemons.get(nombre);
         if (userCollection.contains(p)) {
-            System.out.println("El Pokémon ya está en tu colección.");
+            System.out.println("Ya tienes ese Pokémon en tu colección.");
         } else {
             userCollection.add(p);
             System.out.println("Pokémon agregado a tu colección.");
         }
     }
 
-    // Operación 2: Mostrar los datos completos de un Pokémon.
+    // 2. Mostrar datos completos
     private static void mostrarDatosPokemon(Scanner sc) {
         System.out.print("Ingrese el nombre del Pokémon: ");
         String nombre = sc.nextLine().trim();
 
         if (!allPokemons.containsKey(nombre)) {
-            System.out.println("ERROR: El Pokémon no se encuentra en la base de datos.");
+            System.out.println("ERROR: Ese Pokémon no está en la base de datos.");
             return;
         }
         Pokemon p = allPokemons.get(nombre);
-        System.out.println("Datos completos:");
+        System.out.println("Datos completos del Pokémon:");
         System.out.println(p);
     }
 
-    // Operación 3: Mostrar el nombre y type1 de los Pokémon en la colección del usuario, ordenados por type1.
+    // 3. Mostrar la colección del usuario ordenada por type1
     private static void mostrarColeccionUsuario() {
         if (userCollection.isEmpty()) {
             System.out.println("Tu colección está vacía.");
@@ -178,7 +176,7 @@ public class Main {
         }
     }
 
-    // Operación 4: Mostrar el nombre y type1 de todos los Pokémon (leídos del CSV), ordenados por type1.
+    // 4. Mostrar todos los Pokémon ordenados por type1
     private static void mostrarTodosPokemons() {
         if (allPokemons.isEmpty()) {
             System.out.println("No hay Pokémon en la base de datos.");
@@ -193,7 +191,7 @@ public class Main {
         }
     }
 
-    // Operación 5: Mostrar el nombre de los Pokémon que poseen una habilidad indicada.
+    // 5. Mostrar Pokémon que tengan la habilidad indicada
     private static void mostrarPokemonsPorHabilidad(Scanner sc) {
         System.out.print("Ingrese la habilidad que busca: ");
         String habilidad = sc.nextLine().trim();
@@ -209,4 +207,6 @@ public class Main {
             System.out.println("No se encontraron Pokémon con la habilidad: " + habilidad);
         }
     }
+
+
 }
